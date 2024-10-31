@@ -48,6 +48,7 @@ private: // メンバ変数
 	Model* model_ = nullptr;
 	ViewProjection viewProjection_;
 	Player* player_ = nullptr;
+	
 
 	/// <summary>
 	/// ゲームシーン用
