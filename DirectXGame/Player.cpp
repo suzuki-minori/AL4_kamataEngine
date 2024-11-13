@@ -43,6 +43,18 @@ void Player::Update()
 
 	worldTransform_.TransferMatrix();
 
+
+
+#pragma region デバッグ表示
+	
+	ImGui::Begin("BossData");
+	ImGui::DragFloat3("playerTranslate", &worldTransform_.translation_.x);
+	ImGui::End();
+
+
+#pragma endregion
+
+
 }
 
 void Player::Draw(ViewProjection& viewProjection)
