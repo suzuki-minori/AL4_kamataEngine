@@ -36,8 +36,22 @@ void Player::Update()
 	}
 	//座標移動
 	worldTransform_.translation_ += move;
+
 	//アフィン変換行列の作成
-	worldTransform_.matWorld_ = MakeAffineMatrix(worldTransform_.scale_,worldTransform_.rotation_,worldTransform_.translation_);
+	worldTransform_.matWorld_ = MakeAffineMatrix(worldTransform_.scale_, worldTransform_.rotation_, worldTransform_.translation_);
+
+	//player移動制限
+	const float kMoveLimitX = 33.0;
+	const float kMoveLimitY = 18.0;
+
+	//↑の処理
+	worldTransform_.translation_.x = max(worldTransform_.translation_.x, -kMoveLimitX);
+	worldTransform_.translation_.x = min(worldTransform_.translation_.x, +kMoveLimitX);
+	worldTransform_.translation_.y = max(worldTransform_.translation_.y, -kMoveLimitY);
+	worldTransform_.translation_.y = min(worldTransform_.translation_.y, +kMoveLimitY);
+
+
+	
 	//
 	//worldTransformBlock->TransferMatrix();
 
@@ -47,7 +61,7 @@ void Player::Update()
 
 #pragma region デバッグ表示
 	
-	ImGui::Begin("BossData");
+	ImGui::Begin("playerData");
 	ImGui::DragFloat3("playerTranslate", &worldTransform_.translation_.x);
 	ImGui::End();
 
