@@ -29,17 +29,17 @@ void Player::Update()
 		move.x += kCharacterSpeed;
 	}
 	else if (input_->PushKey(DIK_UP)) {
-		move.y-= kCharacterSpeed;
+		move.y+= kCharacterSpeed;
 	}
 	else if (input_->PushKey(DIK_DOWN)) {
-		move.y += kCharacterSpeed;
+		move.y -= kCharacterSpeed;
 	}
 	//座標移動
 	worldTransform_.translation_ += move;
 	//アフィン変換行列の作成
-	worldTransformBlock->matWorld_ = MakeAffineMatrix(worldTransformBlock->scale_,worldTransformBlock->rotation_,worldTransformBlock->translation_);
+	worldTransform_.matWorld_ = MakeAffineMatrix(worldTransform_.scale_,worldTransform_.rotation_,worldTransform_.translation_);
 	//
-	worldTransformBlock->TransferMatrix();
+	//worldTransformBlock->TransferMatrix();
 
 	worldTransform_.TransferMatrix();
 
