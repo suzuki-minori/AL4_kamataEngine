@@ -1,6 +1,7 @@
 #include "GameScene.h"
 #include "TextureManager.h"
 #include <cassert>
+#include"AxisIndicator.h"
 
 GameScene::GameScene() {}
 
@@ -8,6 +9,7 @@ GameScene::~GameScene() {
 
 	delete model_;
 	delete player_;
+	delete debugCamera_;
 }
 
 void GameScene::Initialize() {
@@ -18,14 +20,37 @@ void GameScene::Initialize() {
 	textureHandle_ = TextureManager::Load("mario.png");
 	model_ = Model::Create();
 	viewProjection_.Initialize();
+	debugCamera_ = new DebugCamera(1080, 720);
 	player_ = new Player();
 	player_->Initialize(model_,textureHandle_,&viewProjection_);
+	AxisIndicator::GetInstance()->SetVisible(true);
+	AxisIndicator::GetInstance()->SetTargetViewProjection(&viewProjection_);
 
 }
 
 void GameScene::Update() {
 
 	player_->Update();
+
+	//カメラ処理
+	if (isDebugCameraActive_) {
+		debugCamera_->Update();
+		viewProjection_.matView =debugCamera_->GetViewProjection().matView;
+		viewProjection_.matProjection = debugCamera_->GetViewProjection().matProjection;
+		//
+		viewProjection_.TransferMatrix();
+	}
+	else {
+		//
+		viewProjection_.UpdateMatrix();
+	}
+
+#ifdef _DEBUG
+	if (input_->TriggerKey(DIK_C)) {
+		isDebugCameraActive_ = !isDebugCameraActive_;
+	}
+#endif // DEBUG
+	
 
 }
 
