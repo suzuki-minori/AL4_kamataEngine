@@ -34,11 +34,13 @@ void Player::Update()
 	else if (input_->PushKey(DIK_DOWN)) {
 		move.y -= kCharacterSpeed;
 	}
+
+
 	//座標移動
 	worldTransform_.translation_ += move;
 
-	//アフィン変換行列の作成
-	worldTransform_.matWorld_ = MakeAffineMatrix(worldTransform_.scale_, worldTransform_.rotation_, worldTransform_.translation_);
+	////アフィン変換行列の作成
+	//worldTransform_.matWorld_ = MakeAffineMatrix(worldTransform_.scale_, worldTransform_.rotation_, worldTransform_.translation_);
 
 	//player移動制限
 	const float kMoveLimitX = 33.0;
@@ -51,11 +53,20 @@ void Player::Update()
 	worldTransform_.translation_.y = min(worldTransform_.translation_.y, +kMoveLimitY);
 
 
+
+	//
+	Attack();
+
+	//
+	if (bullet_) {
+		bullet_->Update();
+	}
+
 	
 	//
 	//worldTransformBlock->TransferMatrix();
 
-	worldTransform_.TransferMatrix();
+	worldTransform_.UpdateMatrix();
 
 
 
@@ -74,6 +85,41 @@ void Player::Update()
 void Player::Draw(ViewProjection& viewProjection)
 {
 	model_->Draw(worldTransform_, viewProjection, textureHandle_);
+
+	//
+	if (bullet_) {
+		bullet_->Draw(viewProjection);
+	}
+
+}
+
+void Player::Rotate()
+{
+	const float kRotSpeed = 0.02f;
+
+	//
+	if (input_->PushKey(DIK_A)) {
+		worldTransform_.rotation_.y -= kRotSpeed;
+	}
+	else if (input_->PushKey(DIK_D)) {
+		worldTransform_.rotation_.y += kRotSpeed;
+	}
+}
+
+void Player::Attack()
+{
+	if (input_->TriggerKey(DIK_SPACE)) {
+
+		//
+		PlayerBullet* newBullet = new PlayerBullet();
+		newBullet->Initialize(model_, worldTransform_.translation_);
+
+		//
+		bullet_ = newBullet;
+
+	}
+
+
 }
 
 
