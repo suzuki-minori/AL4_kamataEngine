@@ -2,12 +2,14 @@
 #include"assert.h"
 #include"TextureManager.h"
 #include"Player.h"
+#include"MathUtilityForText.h"
 
-void PlayerBullet::Initialize(Model* model, const Vector3& position)
+void PlayerBullet::Initialize(Model* model, const Vector3& position,const Vector3& velocity)
 {
 	assert(model);
 
 	model_=model;
+	velocity_ = velocity;
 
 	//
 	textureHandle_ = TextureManager::Load("uvChecker.png");
@@ -17,11 +19,13 @@ void PlayerBullet::Initialize(Model* model, const Vector3& position)
 	//
 	worldTransform_.translation_ = position;
 
-
 }
 
 void PlayerBullet::Update()
 {
+	//
+	worldTransform_.translation_ += velocity_;
+
 	worldTransform_.UpdateMatrix();
 
 }
