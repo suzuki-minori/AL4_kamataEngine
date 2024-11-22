@@ -3,6 +3,7 @@
 #include"WorldTransform.h"
 #include"Input.h"
 #include"PlayerBullet.h"
+#include<list>
 
 
 class Player
@@ -10,6 +11,9 @@ class Player
 public:
 
 	void Initialize(Model*model,uint32_t textureHandle,ViewProjection*viewProjection);
+
+
+	~Player();
 
 
 	void Update();
@@ -43,6 +47,8 @@ private:
 	ViewProjection* viewProjection_=nullptr;
 
 	WorldTransform* worldTransformBlock=nullptr;
+
+	std::list<PlayerBullet*>bullets_;
 
 	void Attack();
 
