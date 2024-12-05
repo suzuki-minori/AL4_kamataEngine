@@ -25,6 +25,8 @@ public:
 	void Rotate();
 
 
+	
+
 
 
 public:
@@ -51,6 +53,9 @@ private:
 	std::list<PlayerBullet*>bullets_;
 
 	void Attack();
+
+	
+
 
 };
 

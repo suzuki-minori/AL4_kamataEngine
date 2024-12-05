@@ -27,10 +27,21 @@ Player::~Player()
 
 void Player::Update()
 {
+	//
+	bullets_.remove_if([](PlayerBullet* bullet) {
+		if (bullet->IsDead()) {
+			delete bullet;
+			return true;
+		}
+		return false;
+	});
+
+
+	//
 	Vector3 move = { 0,0,0 };
 
 	const float kCharacterSpeed = 0.2f;
-
+	       
 	if (input_->PushKey(DIK_LEFT)) {
 		move.x -= kCharacterSpeed;
 	}
@@ -65,6 +76,10 @@ void Player::Update()
 
 	//
 	Attack();
+
+	//
+	Rotate();
+
 
 	//
 	for (PlayerBullet* bullet : bullets_) {
@@ -122,6 +137,9 @@ void Player::Attack()
 		//
 		const float kBulletSpeed = 1.0f;
 		Vector3 velocity(0, 0, kBulletSpeed);
+
+		//
+		velocity = TransformNormal(velocity, worldTransform_.matWorld_);
 
 		//
 		PlayerBullet* newBullet = new PlayerBullet();

@@ -28,6 +28,10 @@ void PlayerBullet::Update()
 
 	worldTransform_.UpdateMatrix();
 
+	//
+	if (--deathTimer_ <= 0) {
+		isDead_ = true;
+	}
 }
 
 void PlayerBullet::Draw(const ViewProjection& viewProjection)
