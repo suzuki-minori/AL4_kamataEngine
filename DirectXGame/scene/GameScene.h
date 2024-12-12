@@ -10,6 +10,7 @@
 #include"Player.h"
 #include"DebugCamera.h"
 #include"MathUtilityForText.h"
+#include"Enemy.h"
 
 /// <summary>
 /// ゲームシーン
@@ -52,7 +53,8 @@ private: // メンバ変数
 	Model* model_ = nullptr;
 	ViewProjection viewProjection_;
 	Player* player_ = nullptr;
-	
+	Enemy* enemy_ = nullptr;
+	Vector3 position_;
 
 	/// <summary>
 	/// ゲームシーン用
