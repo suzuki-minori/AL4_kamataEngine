@@ -12,8 +12,33 @@ void Enemy::Initialize(Model*model,uint32_t textureHandle,const Vector3& positio
 
 void Enemy::Update()
 {
-	worldTransform_.translation_ -= velocity;
+	switch (phase_) {
+	case Phase::Approach:
+	default:
+		ApproachUpdate();
+		break;
 
+	case Phase::Leave:
+		LeaveUpdate();
+		break;
+	}
+}
+
+void Enemy::ApproachUpdate()
+{
+	//
+	worldTransform_.translation_ -= approachVelocity;
+	worldTransform_.UpdateMatrix();
+	//
+	if (worldTransform_.translation_.z < 0.0f) {
+		phase_ = Phase::Leave;
+	}
+}
+
+void Enemy::LeaveUpdate()
+{
+	//
+	worldTransform_.translation_ += leaveVelocity;
 	worldTransform_.UpdateMatrix();
 
 }
