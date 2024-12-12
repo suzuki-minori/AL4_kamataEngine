@@ -23,6 +23,7 @@ void PlayerBullet::Initialize(Model* model, const Vector3& position,const Vector
 
 void PlayerBullet::Update()
 {
+
 	//
 	worldTransform_.translation_ += velocity_;
 
