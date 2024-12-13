@@ -54,7 +54,7 @@ private: // メンバ変数
 	ViewProjection viewProjection_;
 	Player* player_ = nullptr;
 	Enemy* enemy_ = nullptr;
-	Vector3 position_;
+	Vector3 position_ = {5.0f,0.0f,20.0f};
 
 	/// <summary>
 	/// ゲームシーン用
