@@ -1,5 +1,7 @@
 #include "Enemy.h"
 #include"MathUtilityForText.h"
+#include<cassert>
+#include"Player.h"
 
 void Enemy::Initialize(Model*model,uint32_t textureHandle,const Vector3& position)
 {
@@ -87,18 +89,44 @@ void Enemy::ApproachInitialize()
 	kAttackTimer_ = kAttackInterval;
 }
 
+Vector3 Enemy::GetWorldPosition()
+{
+	Vector3 worldPos;
+	//
+	worldPos.x = worldTransform_.translation_.x;
+	worldPos.y = worldTransform_.translation_.y;
+	worldPos.z = worldTransform_.translation_.z;
+
+	return worldPos;
+}
+
+void Enemy::OnCollision()
+{
+}
+
 void Enemy::Attack()
 {
+	assert(player_);
 	//
 	const float kBulletSpeed = 1.0f;
-	Vector3 velocity(0, 0, kBulletSpeed);
+	//Vector3 velocity(0, 0, kBulletSpeed);
+	
+	//
+	Vector3 playerWorldTranslation = player_->GetWorldPosition();
+	Vector3 enemyWorldTranslation = worldTransform_.translation_;
+	Vector3 d = enemyWorldTranslation - playerWorldTranslation;
+	//
+	d = Normalize(d);
+	//
+	d *= kBulletSpeed;
+
 
 	//
-	velocity = TransformNormal(velocity, worldTransform_.matWorld_);
+	//velocity = TransformNormal(velocity, worldTransform_.matWorld_);
 
 	//
 	EnemyBullet* newBullet = new EnemyBullet();
-	newBullet->Initialize(model_, worldTransform_.translation_, velocity);
+	newBullet->Initialize(model_, worldTransform_.translation_, d);
 
 	//
 	bullets_.push_back(newBullet);

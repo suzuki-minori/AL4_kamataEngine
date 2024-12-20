@@ -6,6 +6,10 @@
 #include"ViewProjection.h"
 #include"EnemyBullet.h"
 
+//
+class Player;
+
+
 enum class Phase {
 	Approach,
 	Leave,
@@ -29,12 +33,21 @@ public:
 
 	void ApproachInitialize();
 
+	void SetPlayer(Player* player) { player_ = player; }
+
+	Vector3 GetWorldPosition();
+
+	void OnCollision();
+
 public:
 
-	EnemyBullet* bullet_ = nullptr;
+	//EnemyBullet* bullet_ = nullptr;
 
 	//発射間隔
 	static const int kAttackInterval = 60;
+
+	const std::list<EnemyBullet*>& GetBullets()const { return bullets_; }
+
 
 private:
 
@@ -45,6 +58,7 @@ private:
 	Vector3 approachVelocity = { 0.0f,0.0f,0.1f };
 	Vector3 leaveVelocity = { 0.1f,0.1f,0.1f };
 	Phase phase_ = Phase::Approach;
+	Player* player_ = nullptr;
 
 	std::list<EnemyBullet*>bullets_;
 

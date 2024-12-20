@@ -24,16 +24,18 @@ public:
 
 	void Rotate();
 
-
+	//
+	Vector3 GetWorldPosition();
 	
-
+	//
+	void OnCollision();
 
 
 public:
 
 	PlayerBullet* bullet_ = nullptr;
 
-
+	const std::list<PlayerBullet*>& GetBullets()const { return bullets_; }
 
 
 private:

@@ -18,6 +18,10 @@ public:
 	//
 	bool IsDead() const { return isDead_; }
 
+	void OnCollision();
+
+	Vector3 GetWorldPosition();
+
 
 private:
 	Model* model_ = nullptr;

@@ -28,12 +28,14 @@ void GameScene::Initialize() {
 	AxisIndicator::GetInstance()->SetTargetViewProjection(&viewProjection_);
 	enemy_ = new Enemy();
 	enemy_->Initialize(model_, textureHandle_, position_);
+	enemy_->SetPlayer(player_);
 }
 
 void GameScene::Update() {
 
 	player_->Update();
 	enemy_->Update();
+	CheckAllCollisions();
 
 	//カメラ処理
 	if (isDebugCameraActive_) {
@@ -102,6 +104,91 @@ void GameScene::Draw() {
 
 	// スプライト描画後処理
 	Sprite::PostDraw();
+
+#pragma endregion
+}
+
+//衝突判定
+void GameScene::CheckAllCollisions()
+{
+	//
+	Vector3 posA, posB,posAE,posBE;
+
+	//
+	const std::list<PlayerBullet*>&playerBullets = player_->GetBullets();
+	//
+	const std::list<EnemyBullet*>& enemyBullets = enemy_->GetBullets();
+
+#pragma region 自キャラ敵弾
+
+	//
+	posA = player_->GetWorldPosition();
+
+	//
+	for (EnemyBullet* bullet : enemyBullets) {
+		//
+		posBE = bullet->GetWorldPosition();
+
+		float l = ((posBE.x - posA.x) * (posBE.x - posA.x)) + ((posBE.y - posA.y) * (posBE.y - posA.y)) + ((posBE.z - posA.z) * (posBE.z - posA.z));
+	
+		if (l <= 3) {
+			//
+			player_->OnCollision();
+			//
+			bullet->OnCollision();
+
+		}
+	
+	}
+
+#pragma endregion
+
+#pragma region 自弾敵キャラ
+
+	//
+	posAE = enemy_->GetWorldPosition();
+
+	//
+	for (PlayerBullet* bullet : playerBullets) {
+		//
+		posB = bullet->GetWorldPosition();
+
+		float l = ((posB.x - posAE.x) * (posB.x - posAE.x)) + ((posB.y - posAE.y) * (posB.y - posAE.y)) + ((posB.z - posAE.z) * (posB.z - posAE.z));
+
+		if (l <= 3) {
+			//
+			enemy_->OnCollision();
+			//
+			bullet->OnCollision();
+
+		}
+
+	}
+
+
+#pragma endregion
+
+#pragma region 自弾敵弾
+
+	//
+	for (EnemyBullet* bullet : enemyBullets) {
+		//
+		posBE = bullet->GetWorldPosition();
+
+		for (PlayerBullet* playerBullet : playerBullets) {
+			//
+			posB = playerBullet->GetWorldPosition();
+
+			float l = ((posBE.x - posB.x) * (posBE.x - posB.x)) + ((posBE.y - posB.y) * (posBE.y - posB.y)) + ((posBE.z - posB.z) * (posBE.z - posB.z));
+
+			if (l <= 3) {
+				//
+				bullet->OnCollision();
+
+			}
+
+		}
+	}
 
 #pragma endregion
 }
