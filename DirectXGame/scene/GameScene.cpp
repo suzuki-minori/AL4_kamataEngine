@@ -184,7 +184,8 @@ void GameScene::CheckAllCollisions()
 			if (l <= 3) {
 				//
 				bullet->OnCollision();
-
+				//
+				playerBullet->OnCollision();
 			}
 
 		}
