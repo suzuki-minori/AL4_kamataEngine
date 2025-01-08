@@ -11,6 +11,7 @@
 #include"DebugCamera.h"
 #include"MathUtilityForText.h"
 #include"Enemy.h"
+#include"Skydome.h"
 
 /// <summary>
 /// ゲームシーン
@@ -59,8 +60,22 @@ private: // メンバ変数
 	Player* player_ = nullptr;
 	Enemy* enemy_ = nullptr;
 	Vector3 position_ = {5.0f,0.0f,60.0f};
+	Skydome* skydome_ = nullptr;
+	Model* modelSkydome_ = nullptr;
+
 
 	/// <summary>
 	/// ゲームシーン用
 	/// </summary>
+	
+	bool isGameClear_ = false;
+	bool isGameOver_ = false;
+
+	enum SCENE {
+		TITLE,
+		GAME,
+		CLEAR,
+		GAMEOVER
+	};
+
 };

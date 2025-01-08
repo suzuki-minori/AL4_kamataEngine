@@ -11,7 +11,10 @@ GameScene::~GameScene() {
 	delete player_;
 	delete debugCamera_;
 	delete enemy_;
+	delete model_;
+	delete modelSkydome_;
 }
+
 
 void GameScene::Initialize() {
 
@@ -19,22 +22,33 @@ void GameScene::Initialize() {
 	input_ = Input::GetInstance();
 	audio_ = Audio::GetInstance();
 	textureHandle_ = TextureManager::Load("mario.png");
+	
 	model_ = Model::Create();
+	viewProjection_.farZ = 2000.0f;
 	viewProjection_.Initialize();
 	debugCamera_ = new DebugCamera(1080, 720);
+	debugCamera_->SetFarZ(2000.0f);
 	player_ = new Player();
 	player_->Initialize(model_,textureHandle_,&viewProjection_);
 	AxisIndicator::GetInstance()->SetVisible(true);
 	AxisIndicator::GetInstance()->SetTargetViewProjection(&viewProjection_);
+	
 	enemy_ = new Enemy();
 	enemy_->Initialize(model_, textureHandle_, position_);
 	enemy_->SetPlayer(player_);
+
+	modelSkydome_ = Model::CreateFromOBJ("tenkyuu", true);
+	skydome_ = new Skydome();
+	skydome_->Initialize(modelSkydome_);
 }
+
+
 
 void GameScene::Update() {
 
 	player_->Update();
 	enemy_->Update();
+	skydome_->Update();
 	CheckAllCollisions();
 
 	//カメラ処理
@@ -56,8 +70,8 @@ void GameScene::Update() {
 	}
 #endif // DEBUG
 	
-
 }
+
 
 void GameScene::Draw() {
 
@@ -87,6 +101,7 @@ void GameScene::Draw() {
 	/// </summary>
 	player_->Draw(viewProjection_);
 	enemy_->Draw(viewProjection_);
+	skydome_->Draw(viewProjection_);
 
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();
