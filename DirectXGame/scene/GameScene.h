@@ -71,11 +71,5 @@ private: // メンバ変数
 	bool isGameClear_ = false;
 	bool isGameOver_ = false;
 
-	enum SCENE {
-		TITLE,
-		GAME,
-		CLEAR,
-		GAMEOVER
-	};
-
+	
 };
