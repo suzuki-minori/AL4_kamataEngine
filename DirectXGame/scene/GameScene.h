@@ -50,6 +50,13 @@ public: // メンバ関数
 	//衝突判定
 	void CheckAllCollisions();
 
+
+
+
+	void ChangePhase();
+
+
+
 private: // メンバ変数
 	DirectXCommon* dxCommon_ = nullptr;
 	Input* input_ = nullptr;
@@ -71,11 +78,12 @@ private: // メンバ変数
 	bool isGameClear_ = false;
 	bool isGameOver_ = false;
 
-	enum SCENE {
+	enum class Phase {
 		TITLE,
 		GAME,
 		CLEAR,
 		GAMEOVER
 	};
 
+	Phase phase_;
 };

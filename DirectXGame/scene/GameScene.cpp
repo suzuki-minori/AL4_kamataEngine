@@ -40,11 +40,19 @@ void GameScene::Initialize() {
 	modelSkydome_ = Model::CreateFromOBJ("tenkyuu", true);
 	skydome_ = new Skydome();
 	skydome_->Initialize(modelSkydome_);
+
+	phase_ = Phase::TITLE;
 }
 
 
 
 void GameScene::Update() {
+	switch (phase_) {
+	case Phase::GAME:
+		break;
+	case Phase::GAMEOVER:
+		break;
+	}
 
 	player_->Update();
 	enemy_->Update();
